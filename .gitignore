@@ -23,3 +23,7 @@
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+
+#Intermidiate files and binaries
+RenderingEngine/Binaries/
+RenderingEngine/Intermediate/
