@@ -7,13 +7,16 @@ workspace "RenderingEngine"
 
     architecture "x64"
 
+outputdir = "%{prj.name}-%{cfg.buildcfg}-%{cfg.architecture}"
 
 project "RenderingEngine"
+
     kind "ConsoleApp"
 
     language "C++"
     
-    targetdir ("Binaries/%{prj.name}-%{cfg.buildcfg}-%{cfg.architecture}")
+    targetdir ("Binaries/" .. outputdir)
+    objdir ("Intermediate/" .. outputdir)
 
     systemversion "8.1"
 
@@ -55,6 +58,6 @@ project "RenderingEngine"
 
     postbuildcommands
     {
-        "{COPY} Dependencies/SDL2/lib/x64/SDL2.dll Binaries/%{prj.name}-%{cfg.buildcfg}-%{cfg.architecture}"
+        ("{COPY} Dependencies/SDL2/lib/x64/SDL2.dll Binaries/" .. outputdir)
     }
     
