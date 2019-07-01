@@ -24,7 +24,8 @@ project "RenderingEngine"
     {
         "Source/**.h",
         "Source/**.cpp",
-        "Dependencies/glad/src/**"
+        "Dependencies/**.cpp",
+        "Dependencies/**.h"
     }
 
     includedirs
@@ -32,6 +33,7 @@ project "RenderingEngine"
         "Source/Engine/Shaders/Public",
         "Source/Engine",
         "Source/Engine/Core/Window/Public",
+        "Source/Engine/Core",
         "Dependencies/glad/include",
         "Dependencies/SDL2/include"
     }
