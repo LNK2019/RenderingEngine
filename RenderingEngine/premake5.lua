@@ -25,6 +25,8 @@ project "RenderingEngine"
         "Source/**.h",
         "Source/**.cpp",
         "Dependencies/**.cpp",
+        "Dependencies/**.c",
+        "Dependencies/**.hpp",
         "Dependencies/**.h"
     }
 
