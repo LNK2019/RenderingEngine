@@ -1,6 +1,7 @@
 #pragma once
-#include <stdint.h>
 #include "glad/glad.h"
+#include <stdint.h>
+#include <string>
 
 namespace EShaderType
 {
@@ -15,8 +16,25 @@ namespace EShaderType
 
 class Shader
 {
-	int32_t ShaderID;
+
+	GLint ShaderID;
+	std::string ShaderCode;
+	EShaderType::Type ShaderType;
+	bool bIsShaderCompiled;
 public:
 	Shader(EShaderType::Type ShaderType);
-	Shader(EShaderType::Type ShaderType, const char * Source);
+	//calls ReadShaderFromFile
+ 	Shader(EShaderType::Type ShaderType, const char * ShaderSourcePath);
+	bool ReadShaderFromFile(const char * ShaderSourcePath);
+	void CompileShader();
+	bool IsShaderReadyToAttach() const;
+	bool IsShaderCompiled() const;
+	GLint GetShaderID() const;
+	EShaderType::Type GetShaderType() const;
+private:
+	static bool IsShaderCompilerSupported();
+	//return true if ShaderCode is not empty
+	bool IsShaderCodeExist() const;
+	//return true if ShaderID is valid
+	bool IsValid() const;
 };

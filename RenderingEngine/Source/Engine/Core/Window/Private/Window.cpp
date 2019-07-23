@@ -1,12 +1,7 @@
 #include "Window.h"
-#include "Core/CoreMacros.h"
 #include "cstring"
 
-#define SDLCall(x) {\
-	SDL_ClearError();\
-	x;\
-	ASSERT(SDLProcessErrors(__FUNCTION__,__FILE__, __LINE__));\
-}
+
 
 static bool SDLProcessErrors(const char * FunctionName, const char* FileName, int Line)
 {
@@ -22,21 +17,21 @@ static bool SDLProcessErrors(const char * FunctionName, const char* FileName, in
 Window::Window(const char* Title, int Width, int Height, int XPos /*= SDL_WINDOWPOS_CENTERED*/, int YPos /*= SDL_WINDOWPOS_CENTERED*/)
 {
 	//SDL Initialization
-	int Result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+	int Result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
 	if (Result != 0)
 	{
 		SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
 	}
+
+	SetOpenGLContexAttributes();
+	WindowHandler = SDL_CreateWindow(Title, XPos, YPos, Width, Height, SDL_WINDOW_OPENGL);
 	//Window creation
-	WindowHandle = SDL_CreateWindow(Title, XPos, YPos, Width, Height, SDL_WINDOW_OPENGL);
-	if (!WindowHandle)
+	if (!WindowHandler)
 	{
 		SDL_Log("Failed to create window: %s", SDL_GetError());
 	}
 
-	SetOpenGLContexAttributes();
-
-	GLContex = SDL_GL_CreateContext(WindowHandle);
+	GLContex = SDL_GL_CreateContext(WindowHandler);
 	//OpenGL contex creation
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
 	{
@@ -63,7 +58,8 @@ bool Window::WindowIsClosed() const
 
 void Window::SetOpenGLContexAttributes()
 {
-	SDLCall(SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG));
-	SDLCall(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4));
-	SDLCall(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6));
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 }
