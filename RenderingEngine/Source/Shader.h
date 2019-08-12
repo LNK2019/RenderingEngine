@@ -16,7 +16,6 @@ namespace EShaderType
 
 class Shader
 {
-
 	GLint ShaderID;
 	std::string ShaderCode;
 	EShaderType::Type ShaderType;

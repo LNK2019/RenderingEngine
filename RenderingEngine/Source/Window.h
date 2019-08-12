@@ -10,6 +10,11 @@ class Window
 public:
 	Window(const char* Title,int Width, int Height, int XPos = SDL_WINDOWPOS_CENTERED, int YPos = SDL_WINDOWPOS_CENTERED);
 
+	inline SDL_Window * GetWindowHandler()
+	{
+		return WindowHandler;
+	}
+
 	inline void ShowOpenGLVersion() const
 	{
 		std::cout << "OpenGL version loaded: " << GLVersion.major << "." << GLVersion.minor << std::endl;

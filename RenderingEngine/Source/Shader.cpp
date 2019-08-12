@@ -31,7 +31,7 @@ Shader::Shader(EShaderType::Type InShaderType, const char * ShaderSourcePath) :
 
  bool Shader::IsShaderCodeExist() const
 {
-	return ShaderCode.empty();
+	return !ShaderCode.empty();
 }
 
  //TODO: I am not sure if we need check here, maybe it will be better to log warnings and return true 

@@ -8,9 +8,21 @@
 
 #ifdef RE_DEBUG
 
+#ifdef __GNUC__
+#define RE_NOINLINE  __atribute__((noinline))
+#endif //__GNUC__
+
+#ifdef _MSC_VER
+#define RE_NOINLINE  __declspec(noinline)
+#endif //_MSC_VER
+
+#ifndef RE_NOINLINE
+#error UNSUPPORTED COMPILER!
+#endif //RE_NOINLINE
+
 //Take care: Function is needed to be called only in case if there is 100% error
 static std::string GetErrorString(int InErrorResult) {
-	CHECK(InErrorResult != GL_NO_ERROR)
+	CHECK(InErrorResult != GL_NO_ERROR);
 	std::string ErrorMessage;
 
 	#define Case(Token) case Token : ErrorMessage = #Token; break;
@@ -30,6 +42,12 @@ static std::string GetErrorString(int InErrorResult) {
 	return ErrorMessage;
 }
 
+static void RE_NOINLINE CheckError(int ErrorResult)
+{
+	ErrorResult = glGetError(); 
+	CHECKF(ErrorResult == GL_NO_ERROR, "ERROR: %s", GetErrorString(ErrorResult).c_str()); 
+}
+
 // TODO: Maybe it makes sence to inform user if there is some another error before
 #define GLCall(GLFunction) { \
 	int ErrorResult; \
@@ -39,9 +57,9 @@ static std::string GetErrorString(int InErrorResult) {
 	} \
 	while(ErrorResult != GL_NO_ERROR); \
 	GLFunction; \
-	ErrorResult = glGetError(); \
-	CHECKF(ErrorResult != GL_NO_ERROR, "ERROR:[FILE:%s][LINE:%s][FUNCTION:%s]::%s", __FILE__, __LINE__, __FUNCTION__, GetErrorString(ErrorResult).c_str()); \
-} 
+	CheckError(ErrorResult); \
+	} 
 #else 
 #define GLCall(GLFunction) 
+#define RE_NOINLINE 
 #endif //RE_DEBUG

@@ -17,18 +17,19 @@ bool ShaderProgram::AddProgram(Shader * ShaderToAdd)
 			return false;
 		}
 	}
-	glAttachShader(ShaderProgramID, ShaderToAdd->GetShaderID());
+	GLCall(glAttachShader(ShaderProgramID, ShaderToAdd->GetShaderID()));
 	Shaders.push_back(ShaderToAdd);
 	return true;
 }
 
 bool ShaderProgram::LinkProgram()
 {
-	if (Shaders.empty() && AreShadersCompiled())
+	if (Shaders.empty() || !AreShadersCompiled() || !IsValid())
 	{
 		LOG("WARNING: ShaderProgram is not ready to link!");
 		return false;
 	}
+	GLCall(glLinkProgram(ShaderProgramID));
 	return true;
 }
 
@@ -97,3 +98,13 @@ bool ShaderProgram::SetDouble(const char * VarName, bool NewValue)
 	return true;
 }
 
+void ShaderProgram::UseProgram()
+{
+	GLCall(glUseProgram(ShaderProgramID));
+	//glUseProgram(ShaderProgramID);
+}
+
+bool ShaderProgram::IsValid()
+{
+	return ShaderProgramID != 0;
+}

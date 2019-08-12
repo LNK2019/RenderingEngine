@@ -6,12 +6,15 @@
 
 class ShaderProgram
 {
-	int32_t ShaderProgramID;
+	GLint ShaderProgramID;
 	std::vector<Shader *> Shaders;
 public:
 	ShaderProgram();
+	bool IsValid();
 	//returns false if there is already existing shader 
 	bool AddProgram(Shader * ShaderToAdd);
+	//better to call after if(LinkProgram) to ensure that program can be created in current state
+	void UseProgram();
 	bool LinkProgram();
 	bool SetBool(const char * VarName, bool NewValue);
 	bool SetInt(const char * VarName, bool NewValue);

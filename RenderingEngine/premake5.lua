@@ -32,10 +32,7 @@ project "RenderingEngine"
 
     includedirs
     {
-        "Source/Engine/Shaders/Public",
-        "Source/Engine",
-        "Source/Engine/Core/Window/Public",
-        "Source/Engine/Core",
+        "Source",
         "Dependencies/glad/include",
         "Dependencies/SDL2/include"
     }
